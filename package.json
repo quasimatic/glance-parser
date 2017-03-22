@@ -1,0 +1,27 @@
+{
+  "name": "glance-parser",
+  "version": "0.0.1",
+  "description": "Parses glance syntax",
+  "main": "index.js",
+  "scripts": {
+    "build": "node_modules/.bin/pegjs -o index.js glance.pegjs",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/quasimatic/glance-parser.git"
+  },
+  "keywords": [
+    "glance",
+    "parser"
+  ],
+  "author": "Dan Gilkerson <dangilkerson@quasimatic.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/quasimatic/glance-parser/issues"
+  },
+  "homepage": "https://github.com/quasimatic/glance-parser#readme",
+  "devDependencies": {
+    "pegjs": "^0.10.0"
+  }
+}
