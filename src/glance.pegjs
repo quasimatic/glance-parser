@@ -14,8 +14,7 @@ Intersection = target:Target IntersectChar? {return target}
 Target = label:LabelCharacter+ options:Options? Whitespace? {
   return {
     label: label.join('').trim(),
-    options: options ? options.options : [],
-    useDefaultOptions: options ? options.useDefaultOptions : true
+    options: options || []
   }
 }
 /
@@ -29,7 +28,7 @@ LabelCharacter
   = !(EscapableChars) c:. { return c }
   / EscapedSequence
 
-Options = OptionChar useDefaultOptions:OptionChar? options:Option* { return {options:options, useDefaultOptions: useDefaultOptions?false:true}; }
+Options = OptionChar options:Option* { return options; }
 
 Option = name:Character+ OptionSeparatorChar? { return name.join("").trim() }
 
