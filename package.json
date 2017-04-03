@@ -5,7 +5,8 @@
   "main": "lib/parser.js",
   "scripts": {
     "build": "rm -rf lib; mkdir lib; node_modules/.bin/pegjs -o lib/parser.js src/glance.pegjs",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
