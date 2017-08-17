@@ -1,12 +1,16 @@
-GlanceReference = scopes:Scope+ subject:Subject? {return subject? scopes.concat([subject]) : scopes}
+GlanceReference = scopes:ScopeRight+ subject:Subject? {return subject? scopes.concat([subject]) : scopes}
+  / subject:Subject? scopes:ScopeLeft+ { return subject? scopes.reverse().concat([subject]) : scopes }
   / subject:Subject {return [subject]}
   / .* {return []}
 
-ScopeChar = ">"
+ScopeRightChar = ">"
+ScopeLeftChar = "<"
+ScopeChar = ScopeRightChar / ScopeLeftChar
 IntersectChar = "^"
 OptionChar = "#"
 
-Scope = intersections:Intersection+ ScopeChar {return intersections}
+ScopeRight = intersections:Intersection+ ScopeRightChar {return intersections}
+ScopeLeft = ScopeLeftChar intersections:Intersection+ {return intersections}
 Subject = intersections:Intersection+ {return intersections}
 Intersection = target:Target IntersectChar? {return target}
 

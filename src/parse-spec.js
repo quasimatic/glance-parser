@@ -83,6 +83,25 @@ describe('Parsing', () => {
 	});
 });
 
+describe('Breadcrumb direction', () => {
+	it('should support left to right', () => {
+		parser.parse('scope 1 > scope 2 > subject').should.deep.equal([
+			[{label: 'scope 1', options: []}],
+			[{label: 'scope 2', options: []}],
+			[{label: 'subject', options: []}]
+		]);
+	});
+
+	it('should support right to left', () => {
+		parser.parse('subject < scope 2 < scope 1').should.deep.equal([
+			[{label: 'scope 1', options: []}],
+			[{label: 'scope 2', options: []}],
+			[{label: 'subject', options: []}]
+		]);
+	});
+
+});
+
 describe('Glace Parser: Syntax Errors', () => {
 	it('should not throw an error for an empty string', () => {
 		parser.parse('').should.deep.equal([]);
