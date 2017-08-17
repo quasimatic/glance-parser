@@ -24,13 +24,6 @@ describe('Parsing', () => {
         parser.parse('label\\#10').should.deep.equal([[{label: 'label#10', options: []}]]);
     });
 
-    it('should support multiple options with comma', () => {
-        parser.parse('label#text,visible').should.deep.equal([[{
-            label: 'label',
-            options: ['text', 'visible']
-        }]]);
-    });
-
     it('should support multiple options with pound', () => {
         parser.parse('label #text #visible').should.deep.equal([[{
             label: 'label',

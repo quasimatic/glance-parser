@@ -5,7 +5,6 @@ GlanceReference = scopes:Scope+ subject:Subject? {return subject? scopes.concat(
 ScopeChar = ">"
 IntersectChar = "^"
 OptionChar = "#"
-SeparatorChar = ","
 
 Scope = intersections:Intersection+ ScopeChar {return intersections}
 Subject = intersections:Intersection+ {return intersections}
@@ -30,15 +29,13 @@ LabelCharacter
 
 Options = OptionChar options:Option* { return options; }
 
-Option = name:Character+ OptionSeparatorChar? { return name.join("").trim() }
-
-OptionSeparatorChar = OptionChar / SeparatorChar
+Option = name:Character+  OptionChar? { return name.join("").trim() }
 
 EscapeChar = "\\"
 EscapableChars = EscapeChar / ScopeChar / OptionChar / IntersectChar
 
 EscapedSequence = EscapeChar c:(EscapableChars) { return c }
 
-Character = !(EscapableChars / SeparatorChar) c:. { return c }
+Character = !(EscapableChars) c:. { return c }
 
 Whitespace = [ \t\r\n]+
