@@ -46,20 +46,13 @@ describe('Parsing', () => {
 		parser.parse(' label ').should.deep.equal([[{label: 'label', options: []}]]);
 	});
 
-	it('should support spaces before and after a label', () => {
+	it('should support spaces before and after a label between scopes', () => {
 		parser.parse(' label > label2 ').should.deep.equal([[{label: 'label', options: []}],
 			[{label: 'label2', options: []}]]);
 	});
 
-	it('should support spaces before and after a label', () => {
+	it('should support spaces before and after a label with options', () => {
 		parser.parse(' label#1 ').should.deep.equal([[{label: 'label', options: ['1']}]]);
-	});
-
-	it('should support spaces before and after a label', () => {
-		parser.parse(' label:option ').should.deep.equal([[{
-			label: 'label:option',
-			options: []
-		}]]);
 	});
 
 	it('should support intersecting labels', () => {
@@ -110,4 +103,8 @@ describe('Glace Parser: Syntax Errors', () => {
 	it('should throw an error for >>', () => {
 		expect(() => parser.parse('aaa >>')).to.throw('Expected "#", "\\\\", or end of input but ">" found.');
 	});
+
+	it('should throw an error for mixed directions', () => {
+		expect(() => parser.parse('c < b > a')).to.throw('SyntaxError: Expected "#", "<", "\\\\", "^", [ \\t\\r\\n], or end of input but ">" found.');
+	})
 });
