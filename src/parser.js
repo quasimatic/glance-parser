@@ -1,4 +1,4 @@
-import parser from '../lib/peg-parser';
+var parser = require('../lib/peg-parser');
 
 module.exports = function(reference) {
 	if (typeof(reference) === 'string')
