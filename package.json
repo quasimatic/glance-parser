@@ -1,6 +1,6 @@
 {
   "name": "glance-parser",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Parses glance syntax",
   "main": "lib/parser.js",
   "scripts": {
