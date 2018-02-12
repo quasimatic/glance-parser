@@ -64,6 +64,15 @@ describe('Parsing', () => {
 		parse('label >').should.deep.equal([[{label: 'label', options: []}]]);
 	});
 
+	it('should allow for an option only', function() {
+		parse('#option').should.deep.equal([
+			[{
+				label: '',
+				options: ['option']
+			}]
+		]);
+	});
+
 	it('should support an option only target', () => {
 		parse('label > #option').should.deep.equal([
 			[{

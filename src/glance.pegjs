@@ -23,6 +23,7 @@ Target = label:LabelCharacter+ options:Options? Whitespace? {
 /
 options:Options Whitespace? {
   return {
+	label: '',
     options: options || []
   }
 }
