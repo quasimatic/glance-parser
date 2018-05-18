@@ -1,45 +1,29 @@
-var wallabyWebpack = require('wallaby-webpack');
-
 module.exports = function(wallaby) {
-	var webpackPostprocessor = wallabyWebpack({
-		module: {
-			loaders: [
-				{
-					test: /.js?$/,
-					loader: 'babel-loader',
-					exclude: /node_modules/,
-					query: {
-						presets: ['es2015']
-					}
-				}
-			]
-		}
-	});
 	return {
 		files: [
 			{pattern: 'node_modules/chai/chai.js', instrument: false},
-			{pattern: 'src/**/*.js', load:false},
-			{pattern: 'lib/**/peg-parser.js', load: false},
-			{pattern: '!**/*-spec.js', load: false},
+			'src/**/*.js',
+			'!src/**/*-spec.js'
 		],
 
 		tests: [
-			{pattern: '**/*-spec.js', load: false},
+			'src/**/*-spec.js'
 		],
 
 		compilers: {
 			'**/*.js': wallaby.compilers.babel()
 		},
 
-		postprocessor: webpackPostprocessor,
-
 		testFramework: 'mocha',
 
-		setup: function() {
-			window.expect = chai.expect;
-			chai.should();
+		env: {
+			type: 'node',
+			runner: 'node'
+		},
 
-			window.__moduleBundler.loadTests();
+		setup: function() {
+			global.expect = chai.expect;
+			chai.should();
 		}
 	};
 };

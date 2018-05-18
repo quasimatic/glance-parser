@@ -2,9 +2,9 @@
   "name": "glance-parser",
   "version": "0.0.7",
   "description": "Parses glance syntax",
-  "main": "lib/parser.js",
+  "main": "lib/parse.js",
   "scripts": {
-    "build": "rm -rf lib; mkdir lib; node_modules/.bin/pegjs --optimize size -o lib/peg-parser.js src/glance.pegjs; cp src/parser.js lib/",
+    "build": "rm -rf lib && babel src --ignore **/*-spec.js --out-dir lib",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepublishOnly": "npm run build"
   },
@@ -23,13 +23,15 @@
   },
   "homepage": "https://github.com/quasimatic/glance-parser#readme",
   "devDependencies": {
-    "babel-core": "^6.26.0",
-    "babel-loader": "7.1.2",
-    "babel-preset-es2015": "^6.24.1",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.7.0",
     "chai": "^4.1.2",
-    "mocha": "^5.0.0",
-    "pegjs": "^0.11.0-dev",
-    "wallaby-webpack": "3.9.4",
-    "webpack": "^3.10.0"
+    "mocha": "^5.1.1"
+  },
+  "babel": {
+    "presets": [
+      "env"
+    ]
   }
 }

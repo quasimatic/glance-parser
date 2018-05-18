@@ -101,7 +101,6 @@ describe('Breadcrumb direction', () => {
 			[{label: 'subject', options: []}]
 		]);
 	});
-
 });
 
 describe('Glace Parser: Syntax Errors', () => {
@@ -109,12 +108,8 @@ describe('Glace Parser: Syntax Errors', () => {
 		parse('').should.deep.equal([]);
 	});
 
-	it('should throw an error for >>', () => {
-		expect(() => parse('aaa >>')).to.throw('Expected "#", "\\\\", end of input, not ">", or not "\\\\" but ">" found.');
-	});
-
 	it('should throw an error for mixed directions', () => {
-		expect(() => parse('c < b > a')).to.throw('Expected "#", "<", "\\\\", "^", [ ,\\t,\\r,\\n], end of input, not ">", or not "\\\\" but ">" found.');
+		expect(() => parse('c < b > a')).to.throw('Directions can not be mixed. Please choose right (>) or left (<) for your reference');
 	});
 });
 
