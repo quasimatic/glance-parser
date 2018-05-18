@@ -1,11 +1,19 @@
+function unescape(string, ...chars) {
+	return chars.reduce((r, c) => r.replace('\\' + c, c), string);
+}
+
+function match(string, char) {
+	return string.match(new RegExp(`(?:[^${char}\\\\]|\\\\.)+`, 'g'));
+}
+
 export default function parse(reference) {
 	if(reference === '') return [];
 
-	let rightPath = reference.match(/(?:[^>\\]|\\.)+/g);
-	let leftPath = reference.match(/(?:[^<\\]|\\.)+/g);
+	let rightPath = match(reference, '>');
+	let leftPath = match(reference, '<');
 
 	if(rightPath.length > 1 && leftPath.length > 1)
-		throw new Error("Directions can not be mixed. Please choose right (>) or left (<) for your reference");
+		throw new Error('Directions can not be mixed. Please choose right (>) or left (<) for your reference');
 
 	let path;
 	let scopeChar;
@@ -19,15 +27,16 @@ export default function parse(reference) {
 		scopeChar = '<';
 	}
 
-	return path.map(s => {
-		let scopeTarget = s.replace('\\\\', '\\').replace('\\' + scopeChar, scopeChar);
+	return path.map(scope => {
+		let scopeTarget = unescape(scope, '\\', scopeChar);
 
-		return scopeTarget.match(/(?:[^^\\]|\\.)+/g).map(target => {
-			let labelAndOptions = target.trim().match(/(?:[^#\\]|\\.)+/g);
+		return match(scopeTarget, '^').map(target => {
+			let trimmedTarget = target.trim();
+			let labelAndOptions = match(trimmedTarget, '#');
 
 			return {
-				label: target.trim().indexOf('#') !== 0 ? labelAndOptions[0].replace('\\\\', '\\').replace('\\#', '#').trim() : '',
-				options: target.trim().indexOf('#') !== 0 ? labelAndOptions.slice(1).map(o => o.trim()) : labelAndOptions.map(o => o.trim())
+				label: trimmedTarget.indexOf('#') !== 0 ? unescape(labelAndOptions[0].trim(), '\\', '#') : '',
+				options: labelAndOptions.slice(trimmedTarget.indexOf('#') !== 0 ? 1 : 0).map(o => o.trim())
 			};
 		});
 	});
