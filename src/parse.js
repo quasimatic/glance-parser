@@ -36,7 +36,7 @@ export default function parse(reference) {
 
 			return {
 				label: trimmedTarget.indexOf('#') !== 0 ? unescape(labelAndOptions[0].trim(), '\\', '#') : '',
-				options: labelAndOptions.slice(trimmedTarget.indexOf('#') !== 0 ? 1 : 0).map(o => o.trim())
+				options: labelAndOptions.slice(trimmedTarget.indexOf('#') !== 0 ? 1 : 0).map(o => o.trim().toLowerCase().replace(/[^0-9a-z]/g, ''))
 			};
 		});
 	});

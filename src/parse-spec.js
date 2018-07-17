@@ -85,6 +85,16 @@ describe('Parsing', () => {
 	});
 });
 
+describe('Options', () => {
+	it('should be lowercase', function() {
+		parse('subject #OPTION1').should.deep.equal([[{label: 'subject', options: ['option1']}]]);
+	});
+
+	it('should end up alphanumeric and remove all other characters', function() {
+		parse('subject #option-%$@_-').should.deep.equal([[{label: 'subject', options: ['option']}]]);
+	});
+});
+
 describe('Breadcrumb direction', () => {
 	it('should support left to right', () => {
 		parse('scope 1 > scope 2 > subject').should.deep.equal([
