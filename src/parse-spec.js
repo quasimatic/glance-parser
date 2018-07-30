@@ -6,7 +6,7 @@ describe('Parsing', () => {
 	});
 
 	it('should get index', () => {
-		parse('label#10').should.deep.equal([[{label: 'label', options: ['10']}]]);
+		parse('label#10').should.deep.equal([[{label: 'label', options: [10]}]]);
 	});
 
 	it('should support scopes', () => {
@@ -52,7 +52,7 @@ describe('Parsing', () => {
 	});
 
 	it('should support spaces before and after a label with options', () => {
-		parse(' label#1 ').should.deep.equal([[{label: 'label', options: ['1']}]]);
+		parse(' label#1 ').should.deep.equal([[{label: 'label', options: [1]}]]);
 	});
 
 	it('should support intersecting labels', () => {
@@ -93,6 +93,14 @@ describe('Options', () => {
 	it('should end up alphanumeric and remove all other characters', function() {
 		parse('subject #option-%$@_-').should.deep.equal([[{label: 'subject', options: ['option']}]]);
 	});
+
+	it('should support positive numbers', () => {
+		parse('subject #5').should.deep.equal([[{label: 'subject', options: [5]}]]);
+	});
+
+	it('should support negative numbers', () => {
+		parse("subject #-5").should.deep.equal([[{label: 'subject', options: [-5]}]])
+	})
 });
 
 describe('Breadcrumb direction', () => {

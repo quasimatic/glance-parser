@@ -36,7 +36,13 @@ export default function parse(reference) {
 
 			return {
 				label: trimmedTarget.indexOf('#') !== 0 ? unescape(labelAndOptions[0].trim(), '\\', '#') : '',
-				options: labelAndOptions.slice(trimmedTarget.indexOf('#') !== 0 ? 1 : 0).map(o => o.trim().toLowerCase().replace(/[^0-9a-z]/g, ''))
+				options: labelAndOptions.slice(trimmedTarget.indexOf('#') !== 0 ? 1 : 0).map(o => {
+					let lowercaseOption = o.trim().toLowerCase();
+					if(isNaN(lowercaseOption))
+						return lowercaseOption.replace(/[^0-9a-z]/g, '');
+					else
+						return parseInt(lowercaseOption);
+				})
 			};
 		});
 	});
