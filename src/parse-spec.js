@@ -1,6 +1,14 @@
 import parse from './parser';
 
 describe('Parsing', () => {
+	it('should should parse a blank label as one target', () => {
+		parse('').should.deep.equal([[{label: '', options: []}]]);
+	});
+
+	it('should should parse a blank label with options as one target', () => {
+		parse('#1 #2').should.deep.equal([[{label: '', options: [1, 2]}]]);
+	});
+
 	it('should get label', () => {
 		parse('label').should.deep.equal([[{label: 'label', options: []}]]);
 	});
@@ -83,6 +91,18 @@ describe('Parsing', () => {
 			}]
 		]);
 	});
+
+	it('should support an option only scope and target', async () => {
+		parse('#option1 > #option2').should.deep.equal([
+			[{
+				label: '', options: ['option1']
+			}],
+			[{
+				label: '', options: ['option2']
+			}]
+		]);
+
+	});
 });
 
 describe('Options', () => {
@@ -99,8 +119,8 @@ describe('Options', () => {
 	});
 
 	it('should support negative numbers', () => {
-		parse("subject #-5").should.deep.equal([[{label: 'subject', options: [-5]}]])
-	})
+		parse('subject #-5').should.deep.equal([[{label: 'subject', options: [-5]}]]);
+	});
 });
 
 describe('Breadcrumb direction', () => {
@@ -122,10 +142,6 @@ describe('Breadcrumb direction', () => {
 });
 
 describe('Glace Parser: Syntax Errors', () => {
-	it('should not throw an error for an empty string', () => {
-		parse('').should.deep.equal([]);
-	});
-
 	it('should throw an error for mixed directions', () => {
 		expect(() => parse('c < b > a')).to.throw('Directions can not be mixed. Please choose right (>) or left (<) for your reference');
 	});

@@ -3,12 +3,25 @@ function unescape(string, ...chars) {
 }
 
 function match(string, char) {
-	return string.match(new RegExp(`(?:[^${char}\\\\]|\\\\.)+`, 'g'));
+	return string.match(new RegExp(`(?:[^${char}\\\\]|\\\\.)+`, 'g')) || [''];
+}
+
+function options(target) {
+	let labelAndOptions = match(target, '#');
+
+	return {
+		label: target.indexOf('#') !== 0 ? unescape(labelAndOptions[0].trim(), '\\', '#') : '',
+		options: labelAndOptions.slice(target.indexOf('#') !== 0 ? 1 : 0).map(o => {
+			let lowercaseOption = o.trim().toLowerCase();
+			if(isNaN(lowercaseOption))
+				return lowercaseOption.replace(/[^0-9a-z]/g, '');
+			else
+				return parseInt(lowercaseOption);
+		})
+	};
 }
 
 export default function parse(reference) {
-	if(reference === '') return [];
-
 	let rightPath = match(reference, '>');
 	let leftPath = match(reference, '<');
 
@@ -32,18 +45,7 @@ export default function parse(reference) {
 
 		return match(scopeTarget, '^').map(target => {
 			let trimmedTarget = target.trim();
-			let labelAndOptions = match(trimmedTarget, '#');
-
-			return {
-				label: trimmedTarget.indexOf('#') !== 0 ? unescape(labelAndOptions[0].trim(), '\\', '#') : '',
-				options: labelAndOptions.slice(trimmedTarget.indexOf('#') !== 0 ? 1 : 0).map(o => {
-					let lowercaseOption = o.trim().toLowerCase();
-					if(isNaN(lowercaseOption))
-						return lowercaseOption.replace(/[^0-9a-z]/g, '');
-					else
-						return parseInt(lowercaseOption);
-				})
-			};
+			return options(trimmedTarget);
 		});
 	});
 }
