@@ -153,3 +153,56 @@ describe('Preparsed data', () => {
 		parse(data).should.deep.equal(data);
 	});
 });
+
+describe('Different characters', () => {
+	it('should support a different scope character', () => {
+		let data = parse('scope / subject', {
+			scopeRight: '/',
+			scopeLeft: false
+		});
+
+		data.should.deep.equal([
+			[{label: 'scope', options: []}],
+			[{label: 'subject', options: []}]
+		]);
+	});
+
+	it('should fail if scopeLeft and escape character match', () => {
+		expect(() => parse('scope / scope 2 \\ subject', {
+			scopeRight: '/',
+			scopeLeft: '\\'
+		})).to.throw(`scopeLeft (\\) cannot be the same character as escape (\\)`);
+	});
+
+	it('should fail with different scope characters and both directions', () => {
+		expect(() => parse('scope / scope 2 \\ subject', {
+			scopeRight: '/',
+			scopeLeft: '\\',
+			escape: '!'
+		})).to.throw('Directions can not be mixed. Please choose right (/) or left (\\) for your reference');
+	});
+
+	it('should support a different escape character', () => {
+		let data = parse('not a scope !> subject', {
+			escape: '!'
+		});
+
+		data.should.deep.equal([[{label: 'not a scope > subject', options: []}]]);
+	});
+
+	it('should support a different option character', () => {
+		let data = parse('subject *option1', {
+			option: '*'
+		});
+
+		data.should.deep.equal([[{label: 'subject', options: ['option1']}]]);
+	});
+
+	it('should support a different intersect character', () => {
+		let data = parse('part 1 + part 2', {
+			intersect: '+'
+		});
+
+		data.should.deep.equal([[{label: 'part 1', options: []}, {label: 'part 2', options: []}]]);
+	});
+});
