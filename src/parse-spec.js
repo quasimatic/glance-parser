@@ -43,6 +43,10 @@ describe('Parsing', () => {
 		parse('label\\>test').should.deep.equal([[{label: 'label>test', options: []}]]);
 	});
 
+	it('should escape right to left scope character', async () => {
+		parse('label\\<test').should.deep.equal([[{label: 'label<test', options: []}]]);
+	});
+
 	it('should escape the escape character', () => {
 		parse('label\\\\test').should.deep.equal([[{
 			label: 'label\\test',

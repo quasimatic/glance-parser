@@ -56,12 +56,11 @@ export default function parse(reference, config = {}) {
 	}
 
 	return path.map(scope => {
-		let scopeTarget = unescape(scope, escapeChar, escapeChar, scopeChar);
+		let scopeTarget = unescape(scope, escapeChar, escapeChar, scopeChar, scopeLeft, scopeRight);
 
 		return match(scopeTarget, intersectChar, escapeChar).map(target => {
 			let trimmedTarget = target.trim();
 			return options(trimmedTarget, optionChar, escapeChar);
-
 		});
 	});
 }
